@@ -5,55 +5,62 @@ import {
   OnGatewayDisconnect,
   SubscribeMessage,
   WebSocketGateway,
-  WebSocketServer,
 } from '@nestjs/websockets';
-import { Server, Socket } from 'socket.io';
-
-// Meghatározzuk az üzenet típusát, hogy ne használjunk 'any'-t
-interface ChatMessage {
-  text: string;
-  sender: string;
-}
-
-@WebSocketGateway(3006)
+import { Socket } from 'socket.io';
+import { JoinRoomDto } from './dto/join-room.dto';
+import { RoomService } from 'src/room/room.service';
+import { LeaveRoomDto } from './dto/leave-room.dto';
+import { UsePipes, ValidationPipe } from '@nestjs/common';
+import { CreateMessageDto } from './dto/create-message.dto';
+@UsePipes(new ValidationPipe())
+@WebSocketGateway()
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
-  @WebSocketServer()
-  private server: Server;
+  constructor(private readonly roomService: RoomService) {}
 
   handleConnection(client: Socket): void {
     console.log('Client connected', client.id);
-
-    client.broadcast.emit('user-joined', {
-      message: `User joined the chat: ${client.id}`,
-      clientId: client.id,
-    });
   }
 
   handleDisconnect(client: Socket): void {
     console.log('Client disconnected', client.id);
+  }
 
-    this.server.emit('user-left', {
-      message: `User left the chat: ${client.id}`,
-      clientId: client.id,
-    });
+  @SubscribeMessage('join')
+  async onRoomJoin(
+    @ConnectedSocket() client: Socket,
+    @MessageBody() joinRoomDto: JoinRoomDto,
+  ): Promise<void> {
+    const { roomId } = joinRoomDto;
+
+    const room = await this.roomService.findOne(roomId);
+
+    if (!room) {
+      return;
+    }
+
+    await client.join(roomId);
+  }
+
+  @SubscribeMessage('leave')
+  async onRoomLeave(client: Socket, leaveRoomDto: LeaveRoomDto) {
+    const { roomId } = leaveRoomDto;
+
+    await client.leave(roomId);
   }
 
   @SubscribeMessage('message')
-  handleMessage(
-    @ConnectedSocket() client: Socket,
-    @MessageBody() message: ChatMessage,
-  ): void {
-    console.log(
-      'New message from',
-      client.id,
-      ':',
-      message,
-      new Date().toISOString(),
+  async onMessage(client: Socket, createMessageDto: CreateMessageDto) {
+    const { roomId } = createMessageDto;
+
+    if (!client.rooms.has(roomId)) {
+      return;
+    }
+
+    const message = await this.roomService.createMessage(
+      roomId,
+      createMessageDto,
     );
 
-    this.server.emit('message', {
-      message,
-      senderId: client.id,
-    });
+    client.to(roomId).emit('message', message.text);
   }
 }

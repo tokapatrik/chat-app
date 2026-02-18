@@ -2,12 +2,16 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Room } from './enitities/room.entity';
 import { Repository } from 'typeorm';
+import { CreateMessageDto } from 'src/chat/dto/create-message.dto';
+import { Message } from './enitities/message.entity';
 
 @Injectable()
 export class RoomService {
   constructor(
     @InjectRepository(Room)
     private readonly roomRepository: Repository<Room>,
+    @InjectRepository(Message)
+    private readonly messageRepository: Repository<Message>,
   ) {}
 
   async findOne(id: string) {
@@ -40,6 +44,22 @@ export class RoomService {
     }
 
     return this.roomRepository.save(room);
+  }
+
+  async createMessage(
+    roomId: Room['id'],
+    createMessageDto: CreateMessageDto,
+  ): Promise<Message> {
+    const { text } = createMessageDto;
+
+    const room = await this.findOne(roomId);
+
+    const message = this.messageRepository.create({
+      text,
+      room,
+    });
+
+    return await this.messageRepository.save(message);
   }
 
   async delete(id: string) {
