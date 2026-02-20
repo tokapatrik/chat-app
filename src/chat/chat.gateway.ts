@@ -36,7 +36,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   @SubscribeMessage('join')
-  async onRoomJoin(@ConnectedSocket() client: ChatSocket, @MessageBody() joinRoomDto: JoinRoomDto): Promise<void> {
+  async onRoomJoin(
+    @ConnectedSocket() client: ChatSocket,
+    @MessageBody() joinRoomDto: JoinRoomDto,
+  ): Promise<void> {
     const { roomId } = joinRoomDto;
 
     const room = await this.roomService.findById(roomId);
@@ -53,7 +56,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   @SubscribeMessage('leave')
-  async onRoomLeave(@ConnectedSocket() client: ChatSocket, @MessageBody() leaveRoomDto: LeaveRoomDto): Promise<void> {
+  async onRoomLeave(
+    @ConnectedSocket() client: ChatSocket,
+    @MessageBody() leaveRoomDto: LeaveRoomDto,
+  ): Promise<void> {
     const { roomId } = leaveRoomDto;
 
     await client.leave(roomId);
@@ -66,7 +72,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @MessageBody() createMessageDto: CreateMessageDto,
     @CurrentRoom() room: MessageRoom,
   ): Promise<void> {
-    const message = await this.messageService.create(room.roomId, createMessageDto);
+    const message = await this.messageService.create(
+      room.roomId,
+      createMessageDto,
+    );
 
     client.to(room.roomId).emit('message', message.text);
   }

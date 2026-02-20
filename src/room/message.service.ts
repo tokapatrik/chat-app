@@ -14,7 +14,10 @@ export class MessageService {
     private readonly roomService: RoomService,
   ) {}
 
-  async create(roomId: Room['id'], createMessageDto: CreateMessageDto): Promise<Message> {
+  async create(
+    roomId: Room['id'],
+    createMessageDto: CreateMessageDto,
+  ): Promise<Message> {
     const { text } = createMessageDto;
 
     const room = await this.roomService.findById(roomId);

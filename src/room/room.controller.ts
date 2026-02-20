@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { UpdateRoomDto } from './dto/update-room.dto';
 import { RoomService } from './room.service';
@@ -25,7 +33,10 @@ export class RoomController {
   }
 
   @Patch(':id')
-  async update(@Param() { id }: GetRoomParamDto, @Body() updateRoomDto: UpdateRoomDto): Promise<Room> {
+  async update(
+    @Param() { id }: GetRoomParamDto,
+    @Body() updateRoomDto: UpdateRoomDto,
+  ): Promise<Room> {
     return this.roomService.update(id, updateRoomDto);
   }
 

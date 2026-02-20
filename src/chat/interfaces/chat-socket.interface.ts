@@ -5,4 +5,9 @@ interface ChatSocketData {
   room: MessageRoom | undefined;
 }
 
-export type ChatSocket = Socket<DefaultEventsMap, DefaultEventsMap, DefaultEventsMap, ChatSocketData>;
+export type ChatSocket = Socket<
+  DefaultEventsMap,
+  DefaultEventsMap,
+  DefaultEventsMap,
+  ChatSocketData
+>;
