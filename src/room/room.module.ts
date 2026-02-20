@@ -4,11 +4,12 @@ import { Room } from './enitities/room.entity';
 import { RoomService } from './room.service';
 import { RoomController } from './room.controller';
 import { Message } from './enitities/message.entity';
+import { MessageService } from './message.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Room, Message])],
-  providers: [RoomService],
+  providers: [RoomService, MessageService],
   controllers: [RoomController],
-  exports: [RoomService],
+  exports: [RoomService, MessageService],
 })
 export class RoomModule {}

@@ -2,19 +2,16 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Room } from './enitities/room.entity';
 import { Repository } from 'typeorm';
-import { CreateMessageDto } from 'src/chat/dto/create-message.dto';
-import { Message } from './enitities/message.entity';
+import { GetRoomParamDto } from './dto/get-room-param.dto';
 
 @Injectable()
 export class RoomService {
   constructor(
     @InjectRepository(Room)
     private readonly roomRepository: Repository<Room>,
-    @InjectRepository(Message)
-    private readonly messageRepository: Repository<Message>,
   ) {}
 
-  async findOne(id: string) {
+  async findById(id: GetRoomParamDto['id']): Promise<Room> {
     const room = await this.roomRepository.findOneBy({ id });
 
     if (!room) {
@@ -24,16 +21,16 @@ export class RoomService {
     return room;
   }
 
-  async findAll() {
+  async findAll(): Promise<Room[]> {
     return this.roomRepository.find();
   }
 
-  async create(createRoomDto: Partial<Room>) {
+  async create(createRoomDto: Partial<Room>): Promise<Room> {
     const room = this.roomRepository.create(createRoomDto);
     return this.roomRepository.save(room);
   }
 
-  async update(id: string, updateRoomDto: Partial<Room>) {
+  async update(id: GetRoomParamDto['id'], updateRoomDto: Partial<Room>): Promise<Room> {
     const room = await this.roomRepository.preload({
       id,
       ...updateRoomDto,
@@ -46,24 +43,8 @@ export class RoomService {
     return this.roomRepository.save(room);
   }
 
-  async createMessage(
-    roomId: Room['id'],
-    createMessageDto: CreateMessageDto,
-  ): Promise<Message> {
-    const { text } = createMessageDto;
-
-    const room = await this.findOne(roomId);
-
-    const message = this.messageRepository.create({
-      text,
-      room,
-    });
-
-    return await this.messageRepository.save(message);
-  }
-
-  async delete(id: string) {
-    const room = await this.findOne(id);
+  async delete(id: GetRoomParamDto['id']): Promise<void> {
+    const room = await this.findById(id);
     await this.roomRepository.remove(room);
   }
 }

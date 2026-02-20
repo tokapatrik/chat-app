@@ -1,6 +1,6 @@
 import { IsUUID } from 'class-validator';
 
-export class JoinRoomDto {
+export class GetRoomParamDto {
   @IsUUID()
-  roomId: string;
+  readonly id: string;
 }
