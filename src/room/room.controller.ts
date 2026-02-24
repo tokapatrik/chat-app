@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { UpdateRoomDto } from './dto/update-room.dto';
@@ -14,6 +15,8 @@ import { GetRoomParamDto } from './dto/get-room-param.dto';
 import { MessageService } from './message.service';
 import { Room } from './enitities/room.entity';
 import { Message } from './enitities/message.entity';
+import { GetMessagesPaginationDto } from './dto/get-messages-pagination.dto';
+import { CursorPaginationMeta } from 'src/common/queryin/schemas/cursor-pagination-meta.schema';
 
 @Controller('rooms')
 export class RoomController {
@@ -46,7 +49,10 @@ export class RoomController {
   }
 
   @Get(':id/messages')
-  findByRoomId(@Param() { id }: GetRoomParamDto): Promise<Message[]> {
-    return this.messageService.findByRoomId(id);
+  findByRoomId(
+    @Param() { id }: GetRoomParamDto,
+    @Query() query: GetMessagesPaginationDto,
+  ): Promise<CursorPaginationMeta<Message>> {
+    return this.messageService.findByRoomId(id, query);
   }
 }
