@@ -19,13 +19,13 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         username: configService.get('DB_USERNAME'),
         password: configService.get('DB_PASSWORD'),
         autoLoadEntities: true,
-        synchronize: true,
-      }),
+        synchronize: true
+      })
     }),
     ChatModule,
-    RoomModule,
+    RoomModule
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService]
 })
 export class AppModule {}

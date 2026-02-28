@@ -4,7 +4,7 @@ import {
   OnGatewayConnection,
   OnGatewayDisconnect,
   SubscribeMessage,
-  WebSocketGateway,
+  WebSocketGateway
 } from '@nestjs/websockets';
 import { JoinRoomDto } from './dto/join-room.dto';
 import { LeaveRoomDto } from './dto/leave-room.dto';
@@ -24,7 +24,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   constructor(
     private readonly roomService: RoomService,
-    private readonly messageService: MessageService,
+    private readonly messageService: MessageService
   ) {}
 
   handleConnection(client: ChatSocket): void {
@@ -38,7 +38,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage('join')
   async onRoomJoin(
     @ConnectedSocket() client: ChatSocket,
-    @MessageBody() joinRoomDto: JoinRoomDto,
+    @MessageBody() joinRoomDto: JoinRoomDto
   ): Promise<void> {
     const { roomId } = joinRoomDto;
 
@@ -58,7 +58,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage('leave')
   async onRoomLeave(
     @ConnectedSocket() client: ChatSocket,
-    @MessageBody() leaveRoomDto: LeaveRoomDto,
+    @MessageBody() leaveRoomDto: LeaveRoomDto
   ): Promise<void> {
     const { roomId } = leaveRoomDto;
 
@@ -70,12 +70,9 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   async onMessage(
     @ConnectedSocket() client: ChatSocket,
     @MessageBody() createMessageDto: CreateMessageDto,
-    @CurrentRoom() room: MessageRoom,
+    @CurrentRoom() room: MessageRoom
   ): Promise<void> {
-    const message = await this.messageService.create(
-      room.roomId,
-      createMessageDto,
-    );
+    const message = await this.messageService.create(room.roomId, createMessageDto);
 
     client.to(room.roomId).emit('message', message.text);
   }

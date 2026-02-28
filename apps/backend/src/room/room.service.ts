@@ -8,7 +8,7 @@ import { GetRoomParamDto } from './dto/get-room-param.dto';
 export class RoomService {
   constructor(
     @InjectRepository(Room)
-    private readonly roomRepository: Repository<Room>,
+    private readonly roomRepository: Repository<Room>
   ) {}
 
   async findById(id: GetRoomParamDto['id']): Promise<Room> {
@@ -30,13 +30,10 @@ export class RoomService {
     return this.roomRepository.save(room);
   }
 
-  async update(
-    id: GetRoomParamDto['id'],
-    updateRoomDto: Partial<Room>,
-  ): Promise<Room> {
+  async update(id: GetRoomParamDto['id'], updateRoomDto: Partial<Room>): Promise<Room> {
     const room = await this.roomRepository.preload({
       id,
-      ...updateRoomDto,
+      ...updateRoomDto
     });
 
     if (!room) {

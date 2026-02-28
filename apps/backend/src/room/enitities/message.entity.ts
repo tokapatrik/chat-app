@@ -4,7 +4,7 @@ import {
   Column,
   CreateDateColumn,
   ManyToOne,
-  JoinTable,
+  JoinTable
 } from 'typeorm';
 
 import { Room } from './room.entity';

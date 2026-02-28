@@ -1,28 +1,19 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post,
-  Query,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import { CursorPaginationMeta } from '../common/queryin/schemas/cursor-pagination-meta.schema';
 import { CreateRoomDto } from './dto/create-room.dto';
-import { UpdateRoomDto } from './dto/update-room.dto';
-import { RoomService } from './room.service';
-import { GetRoomParamDto } from './dto/get-room-param.dto';
-import { MessageService } from './message.service';
-import { Room } from './enitities/room.entity';
-import { Message } from './enitities/message.entity';
 import { GetMessagesPaginationDto } from './dto/get-messages-pagination.dto';
-import { CursorPaginationMeta } from 'src/common/queryin/schemas/cursor-pagination-meta.schema';
+import { GetRoomParamDto } from './dto/get-room-param.dto';
+import { UpdateRoomDto } from './dto/update-room.dto';
+import { Message } from './enitities/message.entity';
+import { Room } from './enitities/room.entity';
+import { MessageService } from './message.service';
+import { RoomService } from './room.service';
 
 @Controller('rooms')
 export class RoomController {
   constructor(
     private readonly roomService: RoomService,
-    private readonly messageService: MessageService,
+    private readonly messageService: MessageService
   ) {}
 
   @Post()
@@ -38,7 +29,7 @@ export class RoomController {
   @Patch(':id')
   async update(
     @Param() { id }: GetRoomParamDto,
-    @Body() updateRoomDto: UpdateRoomDto,
+    @Body() updateRoomDto: UpdateRoomDto
   ): Promise<Room> {
     return this.roomService.update(id, updateRoomDto);
   }
@@ -51,7 +42,7 @@ export class RoomController {
   @Get(':id/messages')
   findByRoomId(
     @Param() { id }: GetRoomParamDto,
-    @Query() query: GetMessagesPaginationDto,
+    @Query() query: GetMessagesPaginationDto
   ): Promise<CursorPaginationMeta<Message>> {
     return this.messageService.findByRoomId(id, query);
   }

@@ -2,7 +2,7 @@ import { Type } from 'class-transformer';
 import { IsDateString, IsInt, IsOptional, Max, Min } from 'class-validator';
 import {
   DEFAULT_PAGINATION_LIMIT,
-  MAX_PAGINATION_LIMIT,
+  MAX_PAGINATION_LIMIT
 } from '../constants/pagination-limits.constant';
 
 export class CursorPaginationDto {

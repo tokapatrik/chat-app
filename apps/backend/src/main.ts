@@ -9,8 +9,8 @@ async function bootstrap(): Promise<void> {
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
-      transform: true,
-    }),
+      transform: true
+    })
   );
 
   const configService = app.get(ConfigService);

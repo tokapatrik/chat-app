@@ -10,6 +10,10 @@
     "lint": {
       "dependsOn": ["^lint"]
     },
+    "format": {
+      "cache": true,
+      "inputs": ["**/*.{ts,tsx,js,jsx,json,md,css}"]
+    },
     "check-types": {
       "dependsOn": ["^check-types"]
     },

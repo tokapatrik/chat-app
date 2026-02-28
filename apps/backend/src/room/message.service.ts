@@ -13,20 +13,17 @@ export class MessageService {
   constructor(
     @InjectRepository(Message)
     private readonly messageRepository: Repository<Message>,
-    private readonly roomService: RoomService,
+    private readonly roomService: RoomService
   ) {}
 
-  async create(
-    roomId: Room['id'],
-    createMessageDto: CreateMessageDto,
-  ): Promise<Message> {
+  async create(roomId: Room['id'], createMessageDto: CreateMessageDto): Promise<Message> {
     const { text } = createMessageDto;
 
     const room = await this.roomService.findById(roomId);
 
     const message = this.messageRepository.create({
       text,
-      room,
+      room
     });
 
     return await this.messageRepository.save(message);
@@ -34,7 +31,7 @@ export class MessageService {
 
   async findByRoomId(
     roomId: Room['id'],
-    query: GetMessagesPaginationDto,
+    query: GetMessagesPaginationDto
   ): Promise<CursorPaginationMeta<Message>> {
     const { cursor, limit } = query;
 
@@ -47,7 +44,7 @@ export class MessageService {
 
     if (cursor) {
       qb.andWhere('message.created_at < :cursor', {
-        cursor: new Date(cursor),
+        cursor: new Date(cursor)
       });
     }
 
@@ -57,15 +54,13 @@ export class MessageService {
     const items = hasNext ? itemsPlusOne.slice(0, limit) : itemsPlusOne;
 
     const nextCursor =
-      hasNext && items.length > 0
-        ? items[items.length - 1].created_at.toISOString()
-        : null;
+      hasNext && items.length > 0 ? items[items.length - 1].created_at.toISOString() : null;
 
     return {
       items,
       nextCursor,
       hasNext,
-      count: items.length,
+      count: items.length
     };
   }
 }

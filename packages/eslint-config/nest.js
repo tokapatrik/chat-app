@@ -1,6 +1,6 @@
-import globals from "globals";
-import tseslint from "typescript-eslint";
-import { config as baseConfig } from "./base.js";
+import globals from 'globals';
+import tseslint from 'typescript-eslint';
+import { config as baseConfig } from './base.js';
 
 /** @type {import("typescript-eslint").ConfigArray} */
 export const config = [
@@ -10,28 +10,28 @@ export const config = [
     languageOptions: {
       globals: {
         ...globals.node,
-        ...globals.jest,
+        ...globals.jest
       },
-      sourceType: "commonjs",
+      sourceType: 'commonjs',
       parserOptions: {
         projectService: true,
-        tsconfigRootDir: import.meta.dirname,
-      },
-    },
+        tsconfigRootDir: import.meta.dirname
+      }
+    }
   },
   {
     rules: {
-      "@typescript-eslint/no-explicit-any": "off",
-      "@typescript-eslint/no-floating-promises": "warn",
-      "@typescript-eslint/no-unsafe-argument": "warn",
-      "@typescript-eslint/explicit-function-return-type": [
-        "error",
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-floating-promises': 'warn',
+      '@typescript-eslint/no-unsafe-argument': 'warn',
+      '@typescript-eslint/explicit-function-return-type': [
+        'error',
         {
           allowExpressions: false,
-          allowTypedFunctionExpressions: true,
-        },
+          allowTypedFunctionExpressions: true
+        }
       ],
-      "@typescript-eslint/unbound-method": "off",
-    },
-  },
+      '@typescript-eslint/unbound-method': 'off'
+    }
+  }
 ];

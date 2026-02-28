@@ -10,6 +10,6 @@ import { MessageService } from './message.service';
   imports: [TypeOrmModule.forFeature([Room, Message])],
   providers: [RoomService, MessageService],
   controllers: [RoomController],
-  exports: [RoomService, MessageService],
+  exports: [RoomService, MessageService]
 })
 export class RoomModule {}

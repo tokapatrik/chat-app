@@ -1,12 +1,56 @@
 {
   "folders": [
     {
-      "name": "chat-app",
-      "path": ".",
+      "name": "Chat-app",
+      "path": "."
     },
     {
-      "name": "backend",
-      "path": "apps/backend",
+      "name": "Backend",
+      "path": "apps/backend"
     },
+    {
+      "name": "Config: ESLint",
+      "path": "packages/eslint-config"
+    },
+    {
+      "name": "Config: TS",
+      "path": "packages/typescript-config"
+    }
   ],
+  "settings": {
+    // --- ESLint Flat Config támogatás ---
+    "eslint.useFlatConfig": true,
+    "eslint.workingDirectories": [
+      {
+        "mode": "auto"
+      }
+    ],
+
+    // --- Automatikus javítás mentéskor ---
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit",
+      "source.organizeImports": "explicit"
+    },
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+    // --- TypeScript finomhangolás ---
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "typescript.enablePromptUseWorkspaceTsdk": true,
+
+    // --- Zavaró fájlok elrejtése a keresőből ---
+    "search.exclude": {
+      "**/.turbo": true,
+      "**/dist": true,
+      "**/node_modules": true,
+      "**/.next": true
+    }
+  },
+  "extensions": {
+    "recommendations": [
+      "dbaeumer.vscode-eslint",
+      "esbenp.prettier-vscode",
+      "firsttris.vscode-jest-runner"
+    ]
+  }
 }
