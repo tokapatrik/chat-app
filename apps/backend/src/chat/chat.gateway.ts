@@ -7,15 +7,15 @@ import {
   WebSocketGateway,
 } from '@nestjs/websockets';
 import { JoinRoomDto } from './dto/join-room.dto';
-import { RoomService } from 'src/room/room.service';
 import { LeaveRoomDto } from './dto/leave-room.dto';
 import { Logger, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import { CreateMessageDto } from './dto/create-message.dto';
-import { MessageService } from 'src/room/message.service';
 import { ChatSocket } from './interfaces/chat-socket.interface';
 import { RoomContextGuard } from './guards/message/room-context.guard';
 import { MessageRoom } from './interfaces/message-room.interface';
 import { CurrentRoom } from './decorators/current-room/current-room.decorator';
+import { RoomService } from '../room/room.service';
+import { MessageService } from '../room/message.service';
 
 @UsePipes(new ValidationPipe())
 @WebSocketGateway()

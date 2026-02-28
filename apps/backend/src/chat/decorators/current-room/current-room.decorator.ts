@@ -1,6 +1,6 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import { WsException } from '@nestjs/websockets';
-import { ChatSocket } from 'src/chat/interfaces/chat-socket.interface';
+import { ChatSocket } from '../../interfaces/chat-socket.interface';
 
 export const CurrentRoom = createParamDecorator(
   (_: unknown, ctx: ExecutionContext): string => {

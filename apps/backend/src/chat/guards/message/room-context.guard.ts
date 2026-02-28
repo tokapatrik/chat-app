@@ -1,13 +1,13 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
-import { ChatSocket } from 'src/chat/interfaces/chat-socket.interface';
-import { RoomService } from 'src/room/room.service';
+import { RoomService } from '../../../room/room.service';
+import { ChatSocket } from '../../interfaces/chat-socket.interface';
 
 @Injectable()
 export class RoomContextGuard implements CanActivate {
   constructor(private readonly roomService: RoomService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    const client: ChatSocket = context.switchToWs().getClient();
+    const client = context.switchToWs().getClient<ChatSocket>();
 
     const roomId = client.data.room?.roomId;
     if (!roomId) {

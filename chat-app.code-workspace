@@ -1,0 +1,12 @@
+{
+  "folders": [
+    {
+      "name": "chat-app",
+      "path": ".",
+    },
+    {
+      "name": "backend",
+      "path": "apps/backend",
+    },
+  ],
+}

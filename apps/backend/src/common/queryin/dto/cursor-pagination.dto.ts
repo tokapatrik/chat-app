@@ -3,7 +3,7 @@ import { IsDateString, IsInt, IsOptional, Max, Min } from 'class-validator';
 import {
   DEFAULT_PAGINATION_LIMIT,
   MAX_PAGINATION_LIMIT,
-} from 'src/common/queryin/constants/pagination-limits.constant';
+} from '../constants/pagination-limits.constant';
 
 export class CursorPaginationDto {
   @IsOptional()
