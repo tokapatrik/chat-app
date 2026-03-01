@@ -9,6 +9,10 @@
       "path": "apps/backend"
     },
     {
+      "name": "Frontend",
+      "path": "apps/frontend"
+    },
+    {
       "name": "Config: ESLint",
       "path": "packages/eslint-config"
     },
@@ -18,7 +22,7 @@
     }
   ],
   "settings": {
-    // --- ESLint Flat Config támogatás ---
+    // Eslint configuration
     "eslint.useFlatConfig": true,
     "eslint.workingDirectories": [
       {
@@ -26,7 +30,7 @@
       }
     ],
 
-    // --- Automatikus javítás mentéskor ---
+    // Formatting and code actions on save
     "editor.codeActionsOnSave": {
       "source.fixAll.eslint": "explicit",
       "source.organizeImports": "explicit"
@@ -34,16 +38,24 @@
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "esbenp.prettier-vscode",
 
-    // --- TypeScript finomhangolás ---
+    // TypeScript
     "typescript.tsdk": "node_modules/typescript/lib",
     "typescript.enablePromptUseWorkspaceTsdk": true,
 
-    // --- Zavaró fájlok elrejtése a keresőből ---
+    // Hide generated files and common build directories from search and file watching
     "search.exclude": {
       "**/.turbo": true,
       "**/dist": true,
       "**/node_modules": true,
-      "**/.next": true
+      "**/.next": true,
+      "**/routeTree.gen.ts": true
+    },
+
+    "files.watcherExclude": {
+      "**/routeTree.gen.ts": true
+    },
+    "files.readonlyInclude": {
+      "**/routeTree.gen.ts": true
     }
   },
   "extensions": {

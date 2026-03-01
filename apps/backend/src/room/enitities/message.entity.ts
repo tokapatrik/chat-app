@@ -6,7 +6,6 @@ import {
   ManyToOne,
   JoinTable
 } from 'typeorm';
-
 import { Room } from './room.entity';
 
 @Entity()

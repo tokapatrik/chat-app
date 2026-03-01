@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Room } from './enitities/room.entity';
 import { Repository } from 'typeorm';
 import { GetRoomParamDto } from './dto/get-room-param.dto';
+import { Room } from './enitities/room.entity';
 
 @Injectable()
 export class RoomService {

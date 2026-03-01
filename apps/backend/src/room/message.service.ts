@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Message } from './enitities/message.entity';
 import { Repository } from 'typeorm';
-import { RoomService } from './room.service';
-import { Room } from './enitities/room.entity';
 import { GetMessagesPaginationDto } from './dto/get-messages-pagination.dto';
+import { Message } from './enitities/message.entity';
+import { Room } from './enitities/room.entity';
+import { RoomService } from './room.service';
 import { CreateMessageDto } from '../chat/dto/create-message.dto';
 import { CursorPaginationMeta } from '../common/queryin/schemas/cursor-pagination-meta.schema';
 

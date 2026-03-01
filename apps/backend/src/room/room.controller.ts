@@ -1,5 +1,4 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
-import { CursorPaginationMeta } from '../common/queryin/schemas/cursor-pagination-meta.schema';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { GetMessagesPaginationDto } from './dto/get-messages-pagination.dto';
 import { GetRoomParamDto } from './dto/get-room-param.dto';
@@ -8,6 +7,7 @@ import { Message } from './enitities/message.entity';
 import { Room } from './enitities/room.entity';
 import { MessageService } from './message.service';
 import { RoomService } from './room.service';
+import { CursorPaginationMeta } from '../common/queryin/schemas/cursor-pagination-meta.schema';
 
 @Controller('rooms')
 export class RoomController {

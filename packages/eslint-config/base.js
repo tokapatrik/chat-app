@@ -10,16 +10,18 @@ import tseslint from 'typescript-eslint';
  * */
 export const config = [
   eslint.configs.recommended,
-  eslintConfigPrettier,
   ...tseslint.configs.recommended,
   {
     plugins: {
       turbo: turboPlugin
-    },
+    }
+  },
+  {
     rules: {
       'turbo/no-undeclared-env-vars': 'warn'
     }
   },
+  eslintConfigPrettier,
   {
     ignores: ['dist/**']
   }

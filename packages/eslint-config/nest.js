@@ -1,3 +1,4 @@
+import importPlugin from 'eslint-plugin-import';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 import { config as baseConfig } from './base.js';
@@ -17,6 +18,11 @@ export const config = [
         projectService: true,
         tsconfigRootDir: import.meta.dirname
       }
+    }
+  },
+  {
+    plugins: {
+      import: importPlugin
     }
   },
   {

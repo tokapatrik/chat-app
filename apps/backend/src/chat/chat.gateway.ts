@@ -1,3 +1,4 @@
+import { Logger, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
 import {
   ConnectedSocket,
   MessageBody,
@@ -6,16 +7,15 @@ import {
   SubscribeMessage,
   WebSocketGateway
 } from '@nestjs/websockets';
+import { CurrentRoom } from './decorators/current-room/current-room.decorator';
+import { CreateMessageDto } from './dto/create-message.dto';
 import { JoinRoomDto } from './dto/join-room.dto';
 import { LeaveRoomDto } from './dto/leave-room.dto';
-import { Logger, UseGuards, UsePipes, ValidationPipe } from '@nestjs/common';
-import { CreateMessageDto } from './dto/create-message.dto';
-import { ChatSocket } from './interfaces/chat-socket.interface';
-import { RoomContextGuard } from './guards/message/room-context.guard';
-import { MessageRoom } from './interfaces/message-room.interface';
-import { CurrentRoom } from './decorators/current-room/current-room.decorator';
-import { RoomService } from '../room/room.service';
 import { MessageService } from '../room/message.service';
+import { RoomContextGuard } from './guards/message/room-context.guard';
+import { ChatSocket } from './interfaces/chat-socket.interface';
+import { MessageRoom } from './interfaces/message-room.interface';
+import { RoomService } from '../room/room.service';
 
 @UsePipes(new ValidationPipe())
 @WebSocketGateway()
