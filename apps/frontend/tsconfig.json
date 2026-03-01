@@ -5,7 +5,6 @@
     "baseUrl": ".",
     "paths": {
       "#/*": ["./src/*"],
-      "content-collections": ["./.content-collections/generated"],
       "@/*": ["./src/*"]
     }
   }
