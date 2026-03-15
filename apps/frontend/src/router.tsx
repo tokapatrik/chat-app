@@ -1,17 +1,34 @@
-import { createRouter as createTanStackRouter } from '@tanstack/react-router';
-import { getContext } from './integrations/tanstack-query/root-provider';
+import { QueryClient } from '@tanstack/react-query';
+import { createRouter } from '@tanstack/react-router';
+import { setupRouterSsrQueryIntegration } from '@tanstack/react-router-ssr-query';
+import { LoadingSpinner } from './components/LoadingSpinner';
 import { routeTree } from './routeTree.gen';
 
-
 export function getRouter() {
-  const router = createTanStackRouter({
+  const queryClient = new QueryClient();
+
+  const router = createRouter({
     routeTree,
-
-    context: getContext(),
-
+    context: {
+      queryClient
+    },
     scrollRestoration: true,
     defaultPreload: 'intent',
-    defaultPreloadStaleTime: 0
+    defaultPreloadStaleTime: 0,
+    defaultErrorComponent: () => <div>Something went wrong...</div>,
+    defaultPendingMs: 300,
+    defaultPendingMinMs: 400,
+    defaultPendingComponent: () => (
+      <div className="border-muted flex flex-col items-center justify-center gap-2 rounded border p-4">
+        <LoadingSpinner />
+        Loading...
+      </div>
+    )
+  });
+
+  setupRouterSsrQueryIntegration({
+    router,
+    queryClient
   });
 
   return router;

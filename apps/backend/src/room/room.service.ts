@@ -22,7 +22,11 @@ export class RoomService {
   }
 
   async findAll(): Promise<Room[]> {
-    return this.roomRepository.find();
+    return this.roomRepository.find({
+      order: {
+        created_at: 'asc'
+      }
+    });
   }
 
   async create(createRoomDto: Partial<Room>): Promise<Room> {

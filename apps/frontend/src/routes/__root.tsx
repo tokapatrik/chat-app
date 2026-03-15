@@ -1,12 +1,11 @@
 import { TanStackDevtools } from '@tanstack/react-devtools';
 import type { QueryClient } from '@tanstack/react-query';
-import { HeadContent, Scripts, createRootRouteWithContext } from '@tanstack/react-router';
+import { ReactQueryDevtoolsPanel } from '@tanstack/react-query-devtools';
+import { HeadContent, Outlet, Scripts, createRootRouteWithContext } from '@tanstack/react-router';
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools';
-import Footer from '../components/Footer';
-import Header from '../components/Header';
-import TanStackQueryDevtools from '../integrations/tanstack-query/devtools';
-import TanStackQueryProvider from '../integrations/tanstack-query/root-provider';
-import appCss from '../styles.css?url';
+import appCss from '../assets/styles/global.css?url';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Toaster } from '@/components/ui/sonner';
 
 interface MyRouterContext {
   queryClient: QueryClient;
@@ -35,8 +34,46 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
       }
     ]
   }),
-  shellComponent: RootDocument
+  shellComponent: RootDocument,
+  component: RootComponent
 });
+
+function RootComponent() {
+  return (
+    <>
+      <div className="h-dvh overflow-auto [background-image:var(--bg-gradient)]">
+        <main className="mx-auto max-w-4xl px-4 pt-14 pb-8">
+          <Card className="gap-0 p-0 shadow-2xl">
+            <CardHeader>
+              <CardTitle className="border-b py-4 text-center">
+                <h1>Chat App</h1>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="mt-8 ">
+              <Outlet />
+            </CardContent>
+            <CardFooter className="text-muted-foreground shrink-0 justify-center py-3 text-xs">
+              Powered by TanStack Router and TanStack Query
+            </CardFooter>
+          </Card>
+        </main>
+      </div>
+      <Toaster />
+      <TanStackDevtools
+        plugins={[
+          {
+            name: 'Tanstack Router',
+            render: <TanStackRouterDevtoolsPanel />
+          },
+          {
+            name: 'Tanstack Query',
+            render: <ReactQueryDevtoolsPanel />
+          }
+        ]}
+      />
+    </>
+  );
+}
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
@@ -46,23 +83,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body className="font-sans wrap-anywhere antialiased selection:bg-[rgba(79,184,178,0.24)]">
-        <TanStackQueryProvider>
-          <Header />
-          {children}
-          <Footer />
-          <TanStackDevtools
-            config={{
-              position: 'bottom-right'
-            }}
-            plugins={[
-              {
-                name: 'Tanstack Router',
-                render: <TanStackRouterDevtoolsPanel />
-              },
-              TanStackQueryDevtools
-            ]}
-          />
-        </TanStackQueryProvider>
+        {children}
         <Scripts />
       </body>
     </html>

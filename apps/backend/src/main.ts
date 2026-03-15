@@ -13,6 +13,11 @@ async function bootstrap(): Promise<void> {
     })
   );
 
+  app.enableCors({
+    origin: true,
+    credentials: true
+  });
+
   const configService = app.get(ConfigService);
   await app.listen(configService.get('PORT') ?? 3005);
 }

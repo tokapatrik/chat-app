@@ -26,6 +26,11 @@ export class RoomController {
     return this.roomService.findAll();
   }
 
+  @Get(':id')
+  async findById(@Param() { id }: GetRoomParamDto): Promise<Room> {
+    return this.roomService.findById(id);
+  }
+
   @Patch(':id')
   async update(
     @Param() { id }: GetRoomParamDto,

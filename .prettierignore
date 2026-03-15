@@ -4,3 +4,5 @@ dist
 .next
 pnpm-lock.yaml
 coverage
+
+routeTree.gen.ts
