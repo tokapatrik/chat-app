@@ -33,11 +33,13 @@ export class MessageService {
     roomId: Room['id'],
     query: GetMessagesPaginationDto
   ): Promise<CursorPaginationMeta<Message>> {
+    const room = await this.roomService.findById(roomId);
+
     const { cursor, limit } = query;
 
     const qb = this.messageRepository
       .createQueryBuilder('message')
-      .where('message.roomId = :roomId', { roomId })
+      .where('message.roomId = :roomId', { roomId: room.id })
       .orderBy('message.created_at', 'DESC')
       .addOrderBy('message.id', 'DESC')
       .take(limit + 1);
@@ -58,7 +60,7 @@ export class MessageService {
 
     return {
       items,
-      nextCursor,
+      nextCursor: nextCursor ?? undefined,
       hasNext,
       count: items.length
     };

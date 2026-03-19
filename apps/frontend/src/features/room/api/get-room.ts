@@ -1,4 +1,4 @@
-import { queryOptions, useQuery } from '@tanstack/react-query';
+import { queryOptions, useSuspenseQuery } from '@tanstack/react-query';
 import type { RoomForListing } from '../types/room';
 import { axiosClient } from '@/configs/clinet';
 import type { QueryConfig } from '@/configs/query';
@@ -21,7 +21,7 @@ type UseRoomOptions = {
 };
 
 export const useRoom = ({ roomId, queryConfig }: UseRoomOptions) => {
-  return useQuery({
+  return useSuspenseQuery({
     ...getRoomQueryOptions(roomId),
     ...queryConfig
   });

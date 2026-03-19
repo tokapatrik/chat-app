@@ -33,7 +33,11 @@ export function RoomItem({ room }: RoomItemProps) {
             <Pencil />
           </Link>
         </Button>
-        <Button>Join room</Button>
+        <Button>
+          <Link to={`/rooms/$roomId/chat`} params={{ roomId: room.id }}>
+            Join room
+          </Link>
+        </Button>
       </ItemActions>
     </Item>
   );

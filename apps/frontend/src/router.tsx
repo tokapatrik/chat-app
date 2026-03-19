@@ -23,7 +23,8 @@ export function getRouter() {
         <LoadingSpinner />
         Loading...
       </div>
-    )
+    ),
+    defaultNotFoundComponent: () => <div>Page not found</div>
   });
 
   setupRouterSsrQueryIntegration({

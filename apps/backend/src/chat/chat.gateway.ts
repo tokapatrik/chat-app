@@ -16,9 +16,15 @@ import { RoomContextGuard } from './guards/message/room-context.guard';
 import { ChatSocket } from './interfaces/chat-socket.interface';
 import { MessageRoom } from './interfaces/message-room.interface';
 import { RoomService } from '../room/room.service';
+import { Room } from 'src/room/enitities/room.entity';
+import { Message } from 'src/room/enitities/message.entity';
 
 @UsePipes(new ValidationPipe())
-@WebSocketGateway()
+@WebSocketGateway({
+  cors: {
+    origin: true
+  }
+})
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   private readonly logger = new Logger(ChatGateway.name);
 
@@ -39,7 +45,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   async onRoomJoin(
     @ConnectedSocket() client: ChatSocket,
     @MessageBody() joinRoomDto: JoinRoomDto
-  ): Promise<void> {
+  ): Promise<Room> {
     const { roomId } = joinRoomDto;
 
     const room = await this.roomService.findById(roomId);
@@ -53,16 +59,22 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
     await client.join(room.id);
     client.data.room = { roomId: room.id };
+
+    return room;
   }
 
   @SubscribeMessage('leave')
   async onRoomLeave(
     @ConnectedSocket() client: ChatSocket,
     @MessageBody() leaveRoomDto: LeaveRoomDto
-  ): Promise<void> {
+  ): Promise<Room> {
     const { roomId } = leaveRoomDto;
 
     await client.leave(roomId);
+
+    const room = await this.roomService.findById(roomId);
+
+    return room;
   }
 
   @UseGuards(RoomContextGuard)
@@ -71,9 +83,11 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @ConnectedSocket() client: ChatSocket,
     @MessageBody() createMessageDto: CreateMessageDto,
     @CurrentRoom() room: MessageRoom
-  ): Promise<void> {
+  ): Promise<Message> {
     const message = await this.messageService.create(room.roomId, createMessageDto);
 
-    client.to(room.roomId).emit('message', message.text);
+    client.to(room.roomId).emit('message', message);
+
+    return message;
   }
 }

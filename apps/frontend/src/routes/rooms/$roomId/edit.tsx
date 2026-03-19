@@ -1,4 +1,3 @@
-import { useSuspenseQuery } from '@tanstack/react-query';
 import { createFileRoute, Link, notFound, useNavigate } from '@tanstack/react-router';
 import { isAxiosError } from 'axios';
 import { ChevronLeft, LoaderCircle } from 'lucide-react';
@@ -6,7 +5,7 @@ import { toast } from 'sonner';
 import z from 'zod';
 import { Button } from '@/components/ui/button';
 import { useEditRoom } from '@/features/room/api/edit-room';
-import { getRoomQueryOptions } from '@/features/room/api/get-room';
+import { getRoomQueryOptions, useRoom } from '@/features/room/api/get-room';
 import { RoomForm } from '@/features/room/RoomForm';
 
 export const Route = createFileRoute('/rooms/$roomId/edit')({
@@ -30,7 +29,7 @@ export const Route = createFileRoute('/rooms/$roomId/edit')({
 
 function RouteComponent() {
   const { roomId } = Route.useParams();
-  const { data: room } = useSuspenseQuery(getRoomQueryOptions(roomId));
+  const { data: room } = useRoom({ roomId });
 
   const navigate = useNavigate();
 
