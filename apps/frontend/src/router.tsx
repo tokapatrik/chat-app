@@ -5,7 +5,15 @@ import { LoadingSpinner } from './components/LoadingSpinner';
 import { routeTree } from './routeTree.gen';
 
 export function getRouter() {
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    defaultOptions: {
+      queries: {
+        refetchOnWindowFocus: false,
+        retry: false,
+        staleTime: 1000 * 60
+      }
+    }
+  });
 
   const router = createRouter({
     routeTree,

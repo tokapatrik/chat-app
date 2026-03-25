@@ -2,8 +2,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { SendHorizontal } from 'lucide-react';
 import { Controller, useForm } from 'react-hook-form';
 import z from 'zod';
-import { useChatMessages } from './hooks/use-chat-messages';
-import type { Message } from './types/message';
 import { Button } from '@/components/ui/button';
 import { Field, FieldError, FieldGroup } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
@@ -19,21 +17,17 @@ const DEFAULT_VALUES: MessageInput = {
 };
 
 type MessageCreateProps = {
-  onMessageReceived?: (message: Message) => void;
+  onSubmit: (messageInput: MessageInput) => unknown | Promise<unknown>;
 };
 
-export function MessageCreate({ onMessageReceived }: MessageCreateProps) {
-  const { sendMessage } = useChatMessages({
-    onMessageReceived: onMessageReceived
-  });
-
+export function MessageCreate({ onSubmit }: MessageCreateProps) {
   const form = useForm({
     resolver: zodResolver(messageSchema),
     defaultValues: DEFAULT_VALUES
   });
 
-  const handleSubmit = (data: MessageInput) => {
-    sendMessage(data.text.trim());
+  const handleSubmit = async (data: MessageInput) => {
+    await onSubmit({ text: data.text.trim() });
     form.reset();
   };
 

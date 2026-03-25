@@ -21,16 +21,17 @@ export const getMessages = async (
 };
 
 export const getMessagesQueryOptions = (props: GetMessagesProps) => {
+  const { roomId, limit = DEFAULT_LIMIT, cursor } = props;
   return infiniteQueryOptions({
-    queryKey: ['messages', props.roomId, props.limit],
+    queryKey: ['messages', roomId, limit],
     queryFn: ({ pageParam }) => {
       return getMessages({
-        roomId: props.roomId,
-        limit: props.limit,
+        roomId,
+        limit,
         cursor: pageParam
       });
     },
-    initialPageParam: props.cursor,
+    initialPageParam: cursor,
     getNextPageParam: (lastPage) => lastPage.nextCursor
   });
 };
