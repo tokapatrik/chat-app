@@ -35,12 +35,8 @@ export const useChat = ({ roomId }: UseChatProps) => {
     };
   }, []);
 
-  useEffect(() => {
-    if (!isConnected) {
-      return;
-    }
-
-    const handleNewMessage = (message: Message) => {
+  const handleNewMessage = useCallback(
+    (message: Message) => {
       queryClient.setQueryData(getMessagesQueryOptions({ roomId }).queryKey, (oldData) => {
         if (!oldData) {
           return oldData;
@@ -58,7 +54,14 @@ export const useChat = ({ roomId }: UseChatProps) => {
           })
         };
       });
-    };
+    },
+    [roomId, queryClient]
+  );
+
+  useEffect(() => {
+    if (!isConnected) {
+      return;
+    }
 
     socket.emit('join', { roomId });
     socket.on('message', handleNewMessage);
@@ -67,7 +70,7 @@ export const useChat = ({ roomId }: UseChatProps) => {
       socket.emit('leave', { roomId });
       socket.off('message', handleNewMessage);
     };
-  }, [roomId, isConnected, queryClient]);
+  }, [roomId, isConnected, handleNewMessage]);
 
   const {
     data: messages,
@@ -83,28 +86,9 @@ export const useChat = ({ roomId }: UseChatProps) => {
         return;
       }
 
-      socket.emit('message', { text }, (response: Message) => {
-        queryClient.setQueryData(getMessagesQueryOptions({ roomId }).queryKey, (oldData) => {
-          if (!oldData) {
-            return oldData;
-          }
-
-          return {
-            ...oldData,
-            pages: oldData.pages.map((page, index: number) => {
-              if (index === 0) {
-                return {
-                  ...page,
-                  items: [response, ...page.items]
-                };
-              }
-              return page;
-            })
-          };
-        });
-      });
+      socket.emit('message', { text }, handleNewMessage);
     },
-    [isConnected, roomId, queryClient]
+    [isConnected, handleNewMessage]
   );
 
   return { isConnected, messages, fetchNextPage, hasNextPage, sendMessage };
