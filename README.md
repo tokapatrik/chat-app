@@ -110,20 +110,3 @@ Backend (`apps/backend/.env`):
 Frontend (`apps/frontend/.env`):
 
 - `VITE_API_BASE_URL` (example: `http://localhost:3000`)
-
-## Contributing 🤝
-
-Contributions are welcome.
-
-If you want to help, open an issue with:
-
-1. Problem statement
-2. Expected behavior
-3. Repro steps or proposal
-
-Then submit a focused pull request linked to that issue.
-
-## License 📄
-
-No project license has been selected yet.
-Consider adding a license file before broader public distribution.
